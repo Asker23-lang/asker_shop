@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Админка - KENDRICK</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/chatbot.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+  <header class="header header-admin">
+    <div class="header-inner">
+      <a href="/admin.html" class="logo">KENDRICK <span class="logo-sub">Admin</span></a>
+      <nav class="nav">
+        <a href="/" class="nav-link" target="_blank">Открыть сайт</a>
+        <button class="nav-link tab-btn active" data-tab="products">Товары</button>
+        <button class="nav-link tab-btn" data-tab="orders">Заказы</button>
+        <button class="nav-link tab-btn" data-tab="stats">Статистика</button>
+        <button class="nav-link tab-btn" data-tab="slider">Слайдер</button>
+        <button id="theme-toggle" class="nav-link theme-toggle" title="Переключить тему">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+          </svg>
+        </button>
+        <button class="nav-link" id="logout-btn" style="color:rgba(255,255,255,.4); margin-left:16px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+          Выйти
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main admin-main">
+
+    <section id="tab-products" class="admin-tab">
+      <div class="admin-header">
+        <h1>Товары</h1>
+        <button class="btn btn-primary" id="add-product-btn">+ Добавить товар</button>
+      </div>
+
+      <div id="product-form-wrap" class="admin-form-wrap hidden">
+        <h2 id="form-title">Новый товар</h2>
+        <form id="product-form" enctype="multipart/form-data">
+          <input type="hidden" id="product-id" value="">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="p-name">Название</label>
+              <input type="text" id="p-name" required>
+            </div>
+            <div class="form-group">
+              <label for="p-price">Цена (₸)</label>
+              <input type="number" id="p-price" min="0" step="10" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="p-desc">Описание</label>
+            <textarea id="p-desc" rows="2"></textarea>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Размеры</label>
+              <div class="checkbox-group" id="sizes-group">
+                <label><input type="checkbox" value="S"> S</label>
+                <label><input type="checkbox" value="M" checked> M</label>
+                <label><input type="checkbox" value="L" checked> L</label>
+                <label><input type="checkbox" value="XL"> XL</label>
+                <label><input type="checkbox" value="XXL"> XXL</label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Теги</label>
+              <div class="checkbox-group" id="tags-group">
+                <label><input type="checkbox" value="Новинка"> Новинка</label>
+                <label><input type="checkbox" value="Скидка"> Скидка</label>
+                <label><input type="checkbox" value="Хит"> Хит</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Фото</label>
+            <div class="image-upload-area" id="image-upload-area">
+              <input type="file" id="p-image" accept="image/*" class="image-upload-input">
+              <div id="image-upload-placeholder" class="image-upload-placeholder">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.5">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <path d="M21 15l-5-5L5 21" />
+                </svg>
+                <span>Нажмите или перетащите фото</span>
+              </div>
+              <div id="image-preview-wrap" class="image-preview-wrap hidden">
+                <img id="p-image-preview" class="image-preview" alt="">
+                <button type="button" class="image-remove-btn" id="remove-image" title="Удалить фото">&times;</button>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="stock-toggle">
+                <input type="checkbox" id="p-in-stock" checked>
+                <span class="stock-toggle-slider"></span>
+                <span class="stock-toggle-label">В наличии</span>
+              </label>
+            </div>
+            <div class="form-group">
+              <label for="p-stock-qty">Количество на складе</label>
+              <input type="number" id="p-stock-qty" min="0" step="1" placeholder="Не ограничено">
+            </div>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+            <button type="button" class="btn btn-secondary" id="cancel-form">Отмена</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="products-list" class="admin-table-wrap"></div>
+    </section>
+
+    <section id="tab-orders" class="admin-tab hidden">
+      <div class="admin-header">
+        <h1>Заказы</h1>
+      </div>
+      <div id="orders-list" class="admin-table-wrap"></div>
+    </section>
+
+    <!-- ===== STATS TAB ===== -->
+    <section id="tab-stats" class="admin-tab hidden">
+      <h1>Статистика</h1>
+
+      <div class="stats-cards">
+        <div class="stat-card">
+          <span class="stat-label">Всего заказов</span>
+          <span class="stat-value" id="stat-total-orders">0</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Выручка</span>
+          <span class="stat-value" id="stat-revenue">0 ₸</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Средний чек</span>
+          <span class="stat-value" id="stat-avg">0 ₸</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Покупателей</span>
+          <span class="stat-value" id="stat-customers">0</span>
+        </div>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stats-block">
+          <h3>По статусам</h3>
+          <div id="stats-by-status"></div>
+        </div>
+        <div class="stats-block">
+          <h3>По способу оплаты</h3>
+          <div id="stats-by-payment"></div>
+        </div>
+        <div class="stats-block">
+          <h3>Популярные размеры</h3>
+          <div id="stats-sizes"></div>
+        </div>
+      </div>
+
+      <div class="stats-block stats-block-wide">
+        <h3>Заказы за 30 дней</h3>
+        <div class="chart-wrap" id="stats-daily-chart"></div>
+      </div>
+
+      <div class="stats-block stats-block-wide">
+        <h3>Топ товаров</h3>
+        <div id="stats-top-products"></div>
+      </div>
+
+      <div class="stats-block stats-block-wide">
+        <h3>Топ покупателей</h3>
+        <div id="stats-top-customers"></div>
+      </div>
+
+      <div class="stats-block stats-block-wide stats-block-cancel">
+        <h3>Отмены</h3>
+        <div class="stats-cancel-summary" id="stats-cancel-summary"></div>
+        <div id="stats-cancel-products"></div>
+      </div>
+    </section>
+
+    <!-- ===== SLIDER TAB ===== -->
+    <section id="tab-slider" class="admin-tab hidden">
+      <div class="admin-header">
+        <h1>Слайдер</h1>
+        <button class="btn btn-primary" id="add-slide-btn">+ Добавить слайд</button>
+      </div>
+
+      <div id="slide-form-wrap" class="admin-form-wrap hidden">
+        <h2 id="slide-form-title">Новый слайд</h2>
+        <form id="slide-form" enctype="multipart/form-data">
+          <input type="hidden" id="slide-id" value="">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="s-title">Заголовок</label>
+              <input type="text" id="s-title" placeholder="Новая коллекция">
+            </div>
+            <div class="form-group">
+              <label for="s-subtitle">Подзаголовок</label>
+              <input type="text" id="s-subtitle" placeholder="Весна-лето 2026">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="s-btn-text">Текст кнопки</label>
+              <input type="text" id="s-btn-text" placeholder="Смотреть коллекцию">
+            </div>
+            <div class="form-group">
+              <label for="s-btn-link">Ссылка кнопки</label>
+              <input type="text" id="s-btn-link" placeholder="#products">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="s-sort">Порядок (чем меньше — тем раньше)</label>
+            <input type="number" id="s-sort" value="0" min="0" step="1" style="max-width:120px">
+          </div>
+          <div class="form-group">
+            <label>Фото слайда</label>
+            <div class="admin-form-note" style="font-size:12px;color:#999;margin-bottom:8px;">
+              Загрузите файл или укажите URL изображения
+            </div>
+            <div class="image-upload-area" id="slide-image-upload-area">
+              <input type="file" id="s-image" accept="image/*" class="image-upload-input">
+              <div id="slide-image-placeholder" class="image-upload-placeholder">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="1.5">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <circle cx="8.5" cy="8.5" r="1.5" />
+                  <path d="M21 15l-5-5L5 21" />
+                </svg>
+                <span>Нажмите или перетащите фото</span>
+              </div>
+              <div id="slide-image-preview-wrap" class="image-preview-wrap hidden">
+                <img id="s-image-preview" class="image-preview" alt="">
+                <button type="button" class="image-remove-btn" id="slide-remove-image" title="Удалить фото">&times;</button>
+              </div>
+            </div>
+            <input type="text" id="s-image-url" placeholder="Или вставьте URL изображения" style="margin-top:8px;">
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+            <button type="button" class="btn btn-secondary" id="cancel-slide-form">Отмена</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="slides-list" class="admin-table-wrap"></div>
+    </section>
+
+  </main>
+
+  <div id="confirm-overlay" class="confirm-overlay">
+    <div class="confirm-box">
+      <p id="confirm-message"></p>
+      <div class="confirm-actions">
+        <button class="btn btn-primary" id="confirm-yes">Да</button>
+        <button class="btn btn-secondary" id="confirm-no">Отмена</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/admin.js"></script>
+  <script src="/js/chatbot.js"></script>
+  <script>
+    function updateAuthUI() {
+      const userToken = localStorage.getItem('userToken');
+      const userName = localStorage.getItem('userName');
+      const loginLink = document.getElementById('loginLink');
+      const registerLink = document.getElementById('registerLink');
+      const logoutBtn = document.getElementById('logoutBtn');
+      if (userToken && loginLink) {
+        loginLink.style.display = 'none';
+        registerLink.style.display = 'none';
+        logoutBtn.style.display = 'block';
+        logoutBtn.textContent = `${userName || 'Выход'}`;
+        logoutBtn.addEventListener('click', () => {
+          localStorage.removeItem('userToken');
+          localStorage.removeItem('userName');
+          localStorage.removeItem('userEmail');
+          updateAuthUI();
+          window.location.href = '/';
+        });
+      } else if (loginLink) {
+        loginLink.style.display = 'block';
+        registerLink.style.display = 'block';
+        logoutBtn.style.display = 'none';
+      }
+    }
+    updateAuthUI();
+    window.addEventListener('storage', updateAuthUI);
+  </script>
+</body>
+
+</html>

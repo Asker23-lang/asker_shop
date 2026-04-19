@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Вход — KENDRICK</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/css/chatbot.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    .auth-container {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 60px 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: calc(100vh - 80px);
+    }
+
+    .auth-form {
+      width: 100%;
+      max-width: 420px;
+      background: var(--bg-card);
+      border-radius: 0;
+      padding: 48px;
+    }
+
+    .auth-header {
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .auth-header h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 2rem;
+      font-weight: 600;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .auth-header p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      letter-spacing: 1px;
+    }
+
+    .form-group {
+      margin-bottom: 24px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 16px;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      border-radius: 0;
+      font-size: 0.9rem;
+      font-family: inherit;
+      color: var(--text);
+      transition: border-color 0.2s;
+    }
+
+    .form-group input::placeholder {
+      color: var(--text-muted);
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--text);
+    }
+
+    .password-wrap {
+      position: relative;
+    }
+
+    .password-wrap input {
+      padding-right: 44px;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      top: 38px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 16px;
+      padding: 0;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+    }
+
+    .toggle-password:hover {
+      color: var(--text);
+    }
+
+    .error-message {
+      color: #dc3545;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+      margin-top: 6px;
+      display: none;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    .error-message.show {
+      display: block;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 16px 24px;
+      background: #111;
+      color: #fff;
+      border: none;
+      border-radius: 0;
+      font-weight: 500;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 32px;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+      background: #333;
+    }
+
+    .submit-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .submit-btn:active:not(:disabled) {
+      transform: scale(0.97);
+    }
+
+    .auth-footer {
+      text-align: center;
+      margin-top: 32px;
+    }
+
+    .auth-footer p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .auth-footer a {
+      color: var(--text);
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      transition: opacity 0.2s;
+    }
+
+    .auth-footer a:hover {
+      opacity: 0.7;
+    }
+
+    .success-message {
+      display: none;
+      padding: 16px;
+      background: #f0f0f0;
+      border: 1px solid var(--border);
+      border-radius: 0;
+      color: var(--text);
+      margin-bottom: 20px;
+      text-align: center;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    .success-message.show {
+      display: block;
+    }
+
+    .back-link {
+      text-align: center;
+      margin-top: 24px;
+    }
+
+    .back-link a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      display: inline-block;
+      transition: color 0.2s;
+      letter-spacing: 0.5px;
+    }
+
+    .back-link a:hover {
+      color: var(--text);
+    }
+
+    @media (max-width: 480px) {
+      .auth-form {
+        padding: 32px 20px;
+      }
+
+      .auth-header h1 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <div class="header-inner">
+      <a href="/" class="logo">KENDRICK</a>
+      <nav class="nav">
+        <a href="/" class="nav-link">Каталог</a>
+        <a href="/favorites.html" class="nav-link fav-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+          </svg>
+          <span id="fav-count" class="cart-count hidden">0</span>
+        </a>
+        <a href="/cart.html" class="nav-link cart-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+            <line x1="3" y1="6" x2="21" y2="6" />
+            <path d="M16 10a4 4 0 01-8 0" />
+          </svg>
+          <span id="cart-count" class="cart-count hidden">0</span>
+        </a>
+        <button id="theme-toggle" class="nav-link theme-toggle" title="Переключить тему">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+          </svg>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="auth-container">
+      <div class="auth-form">
+        <div class="auth-header">
+          <h1>Вход</h1>
+          <p>Войдите в свой аккаунт</p>
+        </div>
+
+        <div class="error-message" id="errorMessage"></div>
+        <div class="success-message" id="successMessage">Вход успешен! Перенаправляем на главную...</div>
+
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="example@mail.com" required>
+          </div>
+
+          <div class="form-group password-wrap">
+            <label for="password">Пароль</label>
+            <div class="password-wrap">
+              <input type="password" id="password" name="password" placeholder="Введите пароль" required>
+              <button type="button" class="toggle-password" id="togglePassword">👁️</button>
+            </div>
+          </div>
+
+          <button type="submit" class="submit-btn" id="submitBtn">Войти</button>
+        </form>
+
+        <div class="auth-footer">
+          <p>Нет аккаунта? <a href="/register.html">Создайте один</a></p>
+        </div>
+
+        <div class="back-link">
+          <a href="/">← На главную</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/js/main.js"></script>
+  <script src="/js/chatbot.js"></script>
+  <script>
+    const form = document.getElementById('loginForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const errorMessage = document.getElementById('errorMessage');
+    const successMessage = document.getElementById('successMessage');
+    const togglePasswordBtn = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+
+    // Check if already logged in
+    const userToken = localStorage.getItem('userToken');
+    if (userToken) {
+      // Verify token validity
+      fetch('/api/auth/user/check', {
+        headers: { 'X-User-Token': userToken }
+      })
+      .then(r => r.json())
+      .then(data => {
+        if (data.authenticated) {
+          window.location.href = '/';
+        } else {
+          // Token invalid, remove it
+          localStorage.removeItem('userToken');
+          localStorage.removeItem('userName');
+          localStorage.removeItem('userEmail');
+        }
+      })
+      .catch(() => {
+        // Error, remove token
+        localStorage.removeItem('userToken');
+        localStorage.removeItem('userName');
+        localStorage.removeItem('userEmail');
+      });
+    }
+
+    // Toggle password visibility
+    togglePasswordBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Clear previous errors
+      errorMessage.classList.remove('show');
+      successMessage.classList.remove('show');
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+
+      if (!email || !password) return;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Загрузка...';
+
+      try {
+        const response = await fetch('/api/auth/user/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          showError(data.error || 'Ошибка входа');
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Войти';
+          return;
+        }
+
+        // Success
+        localStorage.setItem('userToken', data.token);
+        localStorage.setItem('userName', data.user.name);
+        localStorage.setItem('userEmail', data.user.email);
+
+        successMessage.classList.add('show');
+
+        setTimeout(() => {
+          window.location.href = '/';
+        }, 1500);
+      } catch (error) {
+        console.error('Login error:', error);
+        showError('Ошибка подключения. Повторите попытку.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Войти';
+      }
+    });
+
+    function showError(message) {
+      errorMessage.textContent = message;
+      errorMessage.classList.add('show');
+    }
+  </script>
+</body>
+
+</html>
