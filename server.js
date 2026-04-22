@@ -7,7 +7,7 @@ const { initDatabase } = require('./database/init');
 const db = initDatabase();
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.json({ limit: '100kb' }));
@@ -40,7 +40,6 @@ function requireAdmin(req, res, next) {
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/products', require('./routes/products'));
 app.use('/api/orders', require('./routes/orders'));
-app.use('/api/chatbot', require('./routes/chatbot'));
 app.use('/api/database', require('./routes/database'));
 app.use('/api/admin', requireAdmin, require('./routes/admin'));
 
