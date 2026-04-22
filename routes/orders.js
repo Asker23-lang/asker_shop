@@ -1,7 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const { getDatabase } = require('../database/init');
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
+// Initialize Stripe only if API key is provided
+let stripe = null;
+if (process.env.STRIPE_SECRET_KEY) {
+  const Stripe = require('stripe');
+  stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+}
 
 // POST /api/orders — create a new order
 router.post('/', async (req, res) => {
@@ -82,6 +88,11 @@ router.post('/', async (req, res) => {
 
       const orderId = createOrder();
 
+      // Check if Stripe is configured
+      if (!stripe) {
+        return res.status(500).json({ error: 'Платежная система не настроена' });
+      }
+
       // Create Stripe Checkout Session
       const line_items = validatedItems.map(item => ({
         price_data: {
@@ -145,6 +156,10 @@ router.post('/', async (req, res) => {
 router.get('/verify-payment', async (req, res) => {
   const { session_id } = req.query;
   if (!session_id) return res.status(400).json({ error: 'Не указан session_id' });
+
+  if (!stripe) {
+    return res.status(500).json({ error: 'Платежная система не настроена' });
+  }
 
   try {
     const session = await stripe.checkout.sessions.retrieve(session_id);
